@@ -55,7 +55,7 @@ Rules of the State System in React:
 class App extends React.Component {
     constructor (props) {
         super(props) //we HAVE to call a function called super and pass in props. super is a reference to the parent function in React.Component. Remember we are borrowing functionality and that is how we access it. When we create our constructor function, it overrides what is in React.Component, so super(props) will make sure we get the functionality we need. Now to initialize state we do this...
-        this.state = { lat: 40 } //between the brackets is the state object. it's going to contain specific properties that are important and relevant to our component that we are creating. So in our case now, latitude. So we will want to inialize our state to contain the property latitude or lat, we want to default it to a sensible value. We don't know what the value will be yet, so we will set it to null. It's a key value pair lat:null. Now that it has been initialized we can use this.stat as a variable.
+        this.state = { lat: 40, errorMessage:'' } //between the brackets is the state object. it's going to contain specific properties that are important and relevant to our component that we are creating. So in our case now, latitude. So we will want to inialize our state to contain the property latitude or lat, we want to default it to a sensible value. We don't know what the value will be yet, so we will set it to null. It's a key value pair lat:null. Now that it has been initialized we can use this.stat as a variable.
     }
     //React says we have to define render. If not we will get an error message that we don't have a render method that's returning JSX.
     //We will add a constructor function, a function that is specific to the JS language, not React. In a JS class the constructor function is the very first function that will get called any time an instance of this class is created. Anytime we create a new instance of the app component and show it on the screen, the constructor function is going to be automatically and instantly called before anything else. So that makes it a very good place for us to initialize State...when our App is first created. When we define the constructor method, it is going to automatically be called wiith the props object, and this is the same props object we had with our functional component.
@@ -65,7 +65,9 @@ class App extends React.Component {
             this.setState ({ lat: position.coords.latitude }) this comes from the inspect console in Chrome...the one that finds the latitude.
 
         }   //we want to take the latitude out of the position object and use the latitude alone to update the this.state object. So we use this.setState and pass it an object that has the update to state that we want to make
-        (err) => console.log(err)
+        (err) => {
+            this.setState({errorMessage: err.message})
+        }
         )
     return    <div>Latitude: {this.state.lat}</div>
     }
@@ -83,20 +85,36 @@ class App extends React.Component {
         super(props) 
 
         //THIS IS THE ONLY TIME we do direct assignment to this.state.
-        this.state = { lat: 40 } 
-    }
-    //React says we must define render
-    render () {
+        this.state = { lat: null, errorMessage:'' }; 
+       
         window.navigator.geolocation.getCurrentPosition(
         (position) => {
             //We called setState!!!
             this.setState ({ lat: position.coords.latitude })
-
         }, 
-        (err) => console.log(err)
+        (err) => {
+            this.setState({ errorMessage: err.message })
+        }
         )
-    return    <div>Latitude: {this.state.lat}</div>
-    }
+}   
+        
+    
+    //React says we must define render
+    render () {
+        //this is conditional rendering.
+        if(this.state.errorMessage && !this.state.lat) {
+            return <div>Error: {this.state.errorMessage}</div>
+         } 
+       
+         if(!this.state.errorMessage && this.state.lat) {
+            return <div>Latitude: {this.state.lat}</div>
+         } 
+       
+         return <div>Loading...</div>
+
+      
+        }
+ 
 }
 
 ReactDOM.render(
