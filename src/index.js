@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import SeasonDisplay from './SeasonDisplay'
 
 //outlining the project. Goal is to determine whether it is Summer or Winter for the user based on the month and the latitude(northern or southern hemisphere). There is a built-in function for that. We will need an app component that contains code to determine location and month. Then the app component will pass data down as a prop to the display component. The display component will obviously be in charge of displaying text and icons on the screen to tell the user whether it is winter or summer(determined by the props from the app),
 
@@ -79,12 +80,15 @@ ReactDOM.render(
 )
 
 */
-//====================================================
+/*====================================================
+Here, we initialized state using the constructor function. I have copied that out with all my notes, and below that we will use the componentDoesMount function for initializing state.
+===================================================     */
+/*
 class App extends React.Component {
     constructor (props) {
         super(props) 
 
-        //THIS IS THE ONLY TIME we do direct assignment to this.state.
+        //THIS IS THE ONLY TIME we do direct assignment to this.state. This is how we initialize state. There is another way.
         this.state = { lat: null, errorMessage:'' }; 
        
         window.navigator.geolocation.getCurrentPosition(
@@ -108,6 +112,61 @@ class App extends React.Component {
        
          if(!this.state.errorMessage && this.state.lat) {
             return <div>Latitude: {this.state.lat}</div>
+         } 
+       
+         return <div>Loading...</div>
+
+      
+        }
+ 
+}
+
+ReactDOM.render(
+    <App />,
+    document.querySelector('#root')
+)
+*/
+
+
+
+
+/* Notes on lifecycle 
+
+Component LifeCycle:
+* constructor - good place to do one-time set up
+* render - only for returning JSX
+-----content appears on the screen
+* componentDidMount - recommended place to initialize state instead of in the constructor
+-----sit and wait for updates--good place to do data loading or call our geolocation stuff
+* componentDidUpdate - good place to do more data loading when state/props change. so if we want to do multiple data loading requests every time a component is updated, start looking at componentDidUpdate
+-----sit and wait until this component is no longer shown
+* componentwWillUnmount - good place to do cleanup (especially for non-React stuff)
+
+There are three other lifecycle methods, but they rarely get used, so I am not going to mention them for now, for the sake of simplicity
+
+
+*/
+
+
+
+class App extends React.Component {
+    state = { lat: null, errorMessage:'' };  //this is equivalent to defining the constructor function and initializing state.
+    componentDidMount() {
+        window.navigator.geolocation.getCurrentPosition(
+            (position) => this.setState ({ lat: position.coords.latitude }),
+            (err) => this.setState ({ errorMessage: err.message })
+        );
+    }   
+    
+    
+    render () {
+        
+        if(this.state.errorMessage && !this.state.lat) {
+            return <div>Error: {this.state.errorMessage}</div>
+         } 
+       
+         if(!this.state.errorMessage && this.state.lat) {
+            return <SeasonDisplay  lat={this.state.lat}/> //so we are taking a property from the state on app component and passing it as a prop onto the SeasonDisplay. When we call set state, the component re-renders itself, but in addition, the component will re-render any children that it is showing as well.
          } 
        
          return <div>Loading...</div>
