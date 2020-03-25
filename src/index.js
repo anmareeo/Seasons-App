@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import SeasonDisplay from './SeasonDisplay'
+import Spinner from './Spinner'
+
 
 //outlining the project. Goal is to determine whether it is Summer or Winter for the user based on the month and the latitude(northern or southern hemisphere). There is a built-in function for that. We will need an app component that contains code to determine location and month. Then the app component will pass data down as a prop to the display component. The display component will obviously be in charge of displaying text and icons on the screen to tell the user whether it is winter or summer(determined by the props from the app),
 
@@ -158,7 +160,8 @@ class App extends React.Component {
         );
     }   
     
-    
+    //pretend that no matter the conditions of the if statements, we want to have a red border. The way it is styled below would require that we put a className border on each one. I will comment out this method and show the simpler way below.
+    /*
     render () {
         
         if(this.state.errorMessage && !this.state.lat) {
@@ -169,12 +172,37 @@ class App extends React.Component {
             return <SeasonDisplay  lat={this.state.lat}/> //so we are taking a property from the state on app component and passing it as a prop onto the SeasonDisplay. When we call set state, the component re-renders itself, but in addition, the component will re-render any children that it is showing as well.
          } 
        
-         return <div>Loading...</div>
+         return <Spinner message = 'Please accept location request./>
 
       
         }
  
 }
+*/
+ renderContent () {
+    if(this.state.errorMessage && !this.state.lat) {
+        return <div>Error: {this.state.errorMessage}</div>
+     } 
+   
+     if(!this.state.errorMessage && this.state.lat) {
+        return <SeasonDisplay  lat={this.state.lat}/> 
+     } 
+   
+     return <Spinner message = 'Please accept location request.'/>
+    }
+  
+
+render () {
+    return(
+    <div className = "border-red">
+    {this.renderContent ()}
+    </div>
+    )    
+   
+    }
+
+}
+
 
 ReactDOM.render(
     <App />,
