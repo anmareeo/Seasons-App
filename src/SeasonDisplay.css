@@ -46,3 +46,7 @@
 .summer {
     background-color:peachpuff;
 }
+
+.border-red {
+    border: 5px solid red
+}

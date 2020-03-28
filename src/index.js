@@ -177,9 +177,9 @@ class App extends React.Component {
       
         }
  
-}
+} //in general, anytime we create a component we try as much as possible not to have multiple return statments inside of a render method. if we have conditional logic, we instead want to try to put it into a helper function
 */
- renderContent () {
+ renderContent () { //this is a helper function
     if(this.state.errorMessage && !this.state.lat) {
         return <div>Error: {this.state.errorMessage}</div>
      } 
@@ -195,7 +195,7 @@ class App extends React.Component {
 render () {
     return(
     <div className = "border-red">
-    {this.renderContent ()}
+    {this.renderContent ()} 
     </div>
     )    
    
@@ -208,3 +208,72 @@ ReactDOM.render(
     <App />,
     document.querySelector('#root')
 )
+
+
+/* Benefits of Class Components:
+* Easier code organization
+* Can use "state," another React system and it makes it easier to handle user input
+* It unerstands lifecycle events, and that makes it easier to do things when the app first starts.
+*/
+
+
+
+
+
+/*
+
+************************************************************************************
+
+//***Below is an example of a functional component that is refactored as a class component.***
+If you want to test the functional component, comment out everything but lines 232-239 as well as line 277. If you want to test the class compnent, comment out everything but lines 261-277.
+
+//functional component
+/*
+const UserForm = () => {
+    return (
+        <form>
+            <label>Enter a username:</label>
+            <input />
+        </form>
+    );
+}
+*/
+
+// here is the functional component with notes on how it can easily be changed to a class component:
+/*
+const UserForm = () => { //we change this to say class UserForm extends React.Component{
+
+return (//we wrap this whole return statement jsx inside of a render method render(){}
+    <form>
+        <label>Enter a username:</label>
+        <input />
+    </form>
+);
+}
+
+
+see below the line for the class component. 
+=========================================
+
+//*****  this is the Class Component *****
+/*
+/*
+class UserForm extends React.Component{
+render() {
+    return (
+    <form>
+        <label>Enter a username:</label>
+        <input />
+    </form>
+    );
+
+}
+
+}
+
+
+
+
+//ReactDOM.render(<UserForm />, document.querySelector('#root'));
+*/
+
