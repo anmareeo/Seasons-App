@@ -26,7 +26,7 @@ const SeasonDisplay = props => {
 
 const seasonConfig = {
     winter: {
-        text: "Burrskies! It's cold!!!!",
+        text: "Brrrrrr! It's cold!!!!",
         iconName: 'snowflake'
     },
     summer: {
