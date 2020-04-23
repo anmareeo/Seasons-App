@@ -24,13 +24,14 @@ const SeasonDisplay = props => {
 */
 //this is a better way of coding what is above. It will do the same thing, but it has more concise and readable code. The two ternary expressions above can be simplified by creating a new object that include key value pairs for winter and summer to include the respective text and icons.
 
+//to change location for checking both options. Go to Developer Tools in Chrome. Under the Console Tab, click the three dots, sensors, geolocation.
 const seasonConfig = {
     winter: {
-        text: "Brrrrrr! It's cold!!!!",
+        text: "Brrrrrr! It's cold",
         iconName: 'snowflake'
     },
     summer: {
-        text: "Let's go to the Beach!",
+        text: "Well, sun of a beach! It's hot!!!",
         iconName: 'sun'
     }
 }
